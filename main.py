@@ -44,5 +44,11 @@ c1.cell_btn_object.place(
     x=0, y=0
 )
 
+c2 = Cell()
+c2.create_btn_object(center_frame)
+c2.cell_btn_object.place(
+    x=20, y=0
+    )
+
 #Run the window
 root.mainloop()
