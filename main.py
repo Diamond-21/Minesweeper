@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter.tix import ButtonBox
+from cells import Cell
 import settings
 import utils
 
@@ -37,6 +38,11 @@ center_frame.place(
     y=utils.height_prct(25)
 )
 
+c1 = Cell()
+c1.create_btn_object(center_frame)
+c1.cell_btn_object.place(
+    x=0, y=0
+)
 
 #Run the window
 root.mainloop()
