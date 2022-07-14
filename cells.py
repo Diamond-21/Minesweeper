@@ -2,6 +2,8 @@ from tkinter import Button, Label
 import random
 from typing import SupportsRound
 import settings
+import ctypes
+import sys
 
 class Cell:
     all = []
@@ -49,6 +51,13 @@ class Cell:
                 for cell_obj in self.surrounded_cells:
                     cell_obj.show_cell()
             self.show_cell()
+            # If minesCount = cells leftcount, player won
+            if Cell.cell_count == settings.MINES_COUNT:
+                ctypes.windll.user32.MessageBoxW(0, 'Congratulations You Won The Game!', "Game Over", 0 )
+        
+        #Cancel lef and right click cell events if cell is already opened
+        self.cell_btn_object.unbind('<Button-1>')
+        self.cell_btn_object.unbind('<Button-3>')
 
     def get_cell_by_axis(self, x, y):
      #Return a cell object based on the of value x,y
@@ -88,17 +97,29 @@ class Cell:
                 Cell.cell_count_label_object.configure(
                     text=f"Cells Left: {Cell.cell_count}"
                     )
+            # If this was mine candidate, then for safety, we should configure
+            # the bckground colour to SystemButtonFace
+        self.cell_btn_object.configure(
+            bg='SystemButtonFace'
+        )
+
         # Mark the cell as opened (Use is as list line of this method)
         self.is_opened = True
 
     def show_mine(self):
-    # A logic to interrupt the game and display a message that the palyer lost!
         self.cell_btn_object.configure(bg = "red")
+        ctypes.windll.user32.MessageBoxW(0, 'YOU CLICKED ON A MINE!', 'Game Over', 0)
+        sys.exit()
 
     def right_click_actions(self, event):
         if not self.is_mine_candidate:
             self.cell_btn_object.configure(
                 bg="orange"
+            )
+            self.is_mine_candidate = True
+        else:
+            self.cell_btn_object.configure(
+                bg ="SystemButtonFace"
             )
             self.is_mine_candidate = True
 
